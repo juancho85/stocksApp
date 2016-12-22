@@ -53,24 +53,44 @@
 
   </div>
 </nav>
-
-<!--<div *ngIf="auth.authenticated() && auth.userProfile">-->
-  <!--<h4>You are logged in</h4>-->
-  <!--<div class="row">-->
-    <!--<div class="col-md-6">-->
-      <!--<h3>Profile</h3>-->
-      <!--<img [src]="auth.userProfile.picture" alt="" class="profile-img">-->
-      <!--<p><strong>Name: </strong> {{auth.userProfile.name}}</p>-->
-      <!--<p><strong>Email: </strong> {{auth.userProfile.email}}</p>-->
-      <!--<p><strong>Nickname: </strong> {{auth.userProfile.nickname}}</p>-->
-      <!--<p><strong>Created At: </strong> {{auth.userProfile.created_at}}</p>-->
-      <!--<p><strong>Updated At: </strong> {{auth.userProfile.updated_at}}</p>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
-<!--<h4 *ngIf="!auth.authenticated()">You are not logged in, please click 'Log in' button to login</h4>-->
-
-
+<div class="container-fluid">
+  <div class="row" *ngIf="auth.authenticated()">
+    <input type="text" [(ngModel)]="stockToSave">
+    <button class="btn btn-primary" (click)="saveUserStock()" >Track stock</button>
+  </div>
+  <div class="row" *ngIf="auth.authenticated()">
+    <button class="btn btn-primary" (click)="getUserStocks()" >Get user stocks</button>
+  </div>
+  <div class="row">
+    <input type="text" [(ngModel)]="inCompanyLookup">
+    <button class="btn btn-primary" (click)="companyLookup()" >Company lookup</button>
+  </div>
+  <div class="row">
+    <input type="text" [(ngModel)]="inStockQuote">
+    <button class="btn btn-primary" (click)="stockQuote(inStockQuote)" >Stock quote</button>
+  </div>
+  <div class="row">
+    <input type="text" [(ngModel)]="inStockInteractiveChart">
+    <button class="btn btn-primary" (click)="stockQuote()" >Stock quote</button>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let stock of userStocksArray">
+          {{stock.data.stock}}
+          <a href="#" ><span style="font-size:1.5em;" class="glyphicon glyphicon-trash pull-right" (click)="deleteStockInfo(stock)">   </span></a>
+          <a href="#" ><span style="font-size:1.5em;" class="glyphicon glyphicon-zoom-in pull-right" (click)="getStockInfo(stock.data.stock)">   </span></a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      {{userStocks}}
+    </div>
+  </div>
+  <div class="row">
+    {{stocks}}
+  </div>
+</div>
 
 
 

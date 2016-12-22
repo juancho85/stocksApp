@@ -12,6 +12,14 @@ import {Auth} from './auth.service'
 export class AppComponent implements OnInit {
   httpOutput;
   items: any[] = [];
+  stocks = {};
+  inCompanyLookup = "";
+  inStockQuote = "";
+  stockToSave = "";
+  inStockInteractiveChart = "";
+  userStocks = {};
+  userStocksArray = [];
+  currentStockDetail = {};
   constructor(private stocksDb : StocksDbService, private auth: Auth){}
 
   ngOnInit(){
@@ -40,5 +48,60 @@ export class AppComponent implements OnInit {
       error => console.error(error)
     );
   }
+
+  companyLookup(){
+    this.stocksDb.companyLookup(this.inCompanyLookup).subscribe(
+      data => {
+        this.stocks = JSON.stringify(data);
+      },
+      error => console.error(error)
+    )
+  }
+
+  stockQuote(stockCode: string){
+    this.stocksDb.stockQuote(stockCode).subscribe(
+      data => {
+        this.stocks = JSON.stringify(data);
+      },
+      error => console.error(error)
+    )
+  }
+
+  getUserStocks(){
+    this.stocksDb.getUserStocks(this.auth.userProfile.user_id).subscribe(
+      data => {
+        this.userStocks = JSON.stringify(data);
+        console.log(this.userStocks);
+        const myArray = [];
+        for(let key in data){
+          myArray.push({key: key, data: data[key]});
+        }
+        this.userStocksArray = myArray;
+      },
+      error => console.error(error)
+    )
+  }
+
+  saveUserStock(stock: string) {
+    this.stocksDb.saveUserStock(this.auth.userProfile.user_id, {stock: this.stockToSave}).subscribe(
+      data => {
+        this.stocks = JSON.stringify(data);
+      },
+      error => console.error(error)
+    )
+  }
+
+  getStockInfo(stockCode: string) {
+    this.stockQuote(stockCode);
+  }
+
+  deleteStockInfo(stock: any) {
+    console.log(stock);
+    return this.stocksDb.deleteUserStock(this.auth.userProfile.user_id, stock.key).subscribe(
+      data => {console.log(data)}
+    );
+  }
+
+
 
 }
