@@ -1,3 +1,76 @@
-<h1>
-  {{title}}
-</h1>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Stocks App</a>
+      <!--<button class="btn btn-primary btn-margin" (click)="auth.login()" *ngIf="!auth.authenticated()">Log In</button>-->
+      <!--<button class="btn btn-primary btn-margin" (click)="auth.logout()" *ngIf="auth.authenticated()">Log Out</button>-->
+
+    </div>
+
+    <div *ngIf="!auth.authenticated()" class="collapse navbar-collapse pull-right">
+      <button class="btn navbar-btn" (click)="auth.login()" *ngIf="!auth.authenticated()">Log In</button>
+    </div>
+    <div *ngIf="auth.authenticated() && auth.userProfile" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-user"></span> 
+            <strong>{{auth.userProfile.name}}</strong>
+            <span class="glyphicon glyphicon-chevron-down"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <div class="container-fluid">
+              <li>
+                <div class="navbar-login">
+                  <div class="row">
+                    <!--<div class="col-lg-4">-->
+                    <!--<img [src]="auth.userProfile.picture" alt="" class="profile-img">-->
+                    <!--</div>-->
+                    <div class="col-lg-8">
+                      <p class="text-left"><strong>{{auth.userProfile.name}}</strong></p>
+                      <p class="text-left small">{{auth.userProfile.email}}</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <div class="navbar-login navbar-login-session">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <p>
+                        <a href="#" class="btn btn-danger btn-block" (click)="auth.logout()">Cerrar Sesion</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </div>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+<!--<div *ngIf="auth.authenticated() && auth.userProfile">-->
+  <!--<h4>You are logged in</h4>-->
+  <!--<div class="row">-->
+    <!--<div class="col-md-6">-->
+      <!--<h3>Profile</h3>-->
+      <!--<img [src]="auth.userProfile.picture" alt="" class="profile-img">-->
+      <!--<p><strong>Name: </strong> {{auth.userProfile.name}}</p>-->
+      <!--<p><strong>Email: </strong> {{auth.userProfile.email}}</p>-->
+      <!--<p><strong>Nickname: </strong> {{auth.userProfile.nickname}}</p>-->
+      <!--<p><strong>Created At: </strong> {{auth.userProfile.created_at}}</p>-->
+      <!--<p><strong>Updated At: </strong> {{auth.userProfile.updated_at}}</p>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+<!--<h4 *ngIf="!auth.authenticated()">You are not logged in, please click 'Log in' button to login</h4>-->
+
+
+
+
+
