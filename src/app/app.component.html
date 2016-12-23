@@ -82,14 +82,11 @@
   <div class="row">
     <div class="col-md-6">
       <ul class="list-group">
-        <li class="list-group-item" *ngFor="let stock of userStocksArray">{{stock.data}}
-          <a href="#" ><span class="glyphicon glyphicon-trash pull-right" (click)="deleteStockInfo(stock.key)">   </span></a>
-          <a href="#" ><span class="glyphicon glyphicon-zoom-in pull-right" (click)="stockQuote(stock.data)">   </span></a>
+        <li class="list-group-item" *ngFor="let userStock of userStocks">{{userStock.stockCode}}
+          <a href="#" ><span class="glyphicon glyphicon-trash pull-right" (click)="deleteStockInfo(userStock.key)">   </span></a>
+          <a href="#" ><span class="glyphicon glyphicon-zoom-in pull-right" (click)="stockQuote(userStock.stockCode)">   </span></a>
         </li>
       </ul>
-    </div>
-    <div class="col-md-6">
-      {{userStocks}}
     </div>
   </div>
   <div class="row">

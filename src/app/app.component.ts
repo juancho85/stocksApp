@@ -1,7 +1,8 @@
-import {Component, OnInit, AfterViewChecked} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {StocksDbService} from "./stocks-db.service";
 import {Response} from "@angular/http";
 import {Auth} from './auth.service'
+import {UserStock} from "./user-stock";
 
 @Component({
   selector: 'app-root',
@@ -9,18 +10,21 @@ import {Auth} from './auth.service'
   styleUrls: ['./app.component.css'],
   providers: [StocksDbService, Auth]
 })
-export class AppComponent implements OnInit, AfterViewChecked {
+export class AppComponent implements OnInit {
   stocks = {};
-  userStocks = {};
-  userStocksArray = [];
+  userStocks : UserStock[] = [];
 
   constructor(private stocksDb : StocksDbService, private auth: Auth){}
 
-  ngOnInit(){
-  }
-
-  ngAfterViewChecked() {
-    console.log("ngAfterViewChecked");
+  ngOnInit() {
+    console.log("onInit");
+    this.userStocks = [];
+    this.stocksDb.userStocksChanged.subscribe(
+      data => {
+        this.userStocks = data;
+        console.log(this.userStocks);
+      }
+    );
   }
 
 
@@ -43,36 +47,15 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   getUserStocks(){
-    this.stocksDb.getUserStocks(this.auth.userProfile.user_id).subscribe(
-      data => {
-        this.userStocks = JSON.stringify(data);
-        console.log(this.userStocks);
-        const myArray = [];
-        for(let key in data){
-          myArray.push({key: key, data: data[key]});
-        }
-        this.userStocksArray = myArray;
-      },
-      error => console.error(error)
-    )
+    this.stocksDb.getUserStocks(this.auth.userProfile.user_id).subscribe()
   }
 
-  saveUserStock(stockToSave: string) {
-    this.stocksDb.saveUserStock(this.auth.userProfile.user_id, stockToSave).subscribe(
-      data => {
-        this.stocks = JSON.stringify(data);
-      },
-      error => console.error(error)
-    )
+  saveUserStock(stockCode: string) {
+    this.stocksDb.saveUserStock(this.auth.userProfile.user_id, stockCode).subscribe();
   }
-
-
 
   deleteStockInfo(stockKey: string) {
-    console.log(stockKey);
-    return this.stocksDb.deleteUserStock(this.auth.userProfile.user_id, stockKey).subscribe(
-      data => {console.log(data)}
-    );
+    return this.stocksDb.deleteUserStock(this.auth.userProfile.user_id, stockKey).subscribe();
   }
 
 
