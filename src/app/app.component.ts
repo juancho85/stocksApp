@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, AfterViewChecked} from '@angular/core';
 import {StocksDbService} from "./stocks-db.service";
 import {Response} from "@angular/http";
 import {Auth} from './auth.service'
@@ -9,48 +9,23 @@ import {Auth} from './auth.service'
   styleUrls: ['./app.component.css'],
   providers: [StocksDbService, Auth]
 })
-export class AppComponent implements OnInit {
-  httpOutput;
-  items: any[] = [];
+export class AppComponent implements OnInit, AfterViewChecked {
   stocks = {};
-  inCompanyLookup = "";
-  inStockQuote = "";
-  stockToSave = "";
-  inStockInteractiveChart = "";
   userStocks = {};
   userStocksArray = [];
-  currentStockDetail = {};
+
   constructor(private stocksDb : StocksDbService, private auth: Auth){}
 
   ngOnInit(){
-    this.stocksDb.getData().subscribe(
-      response => this.httpOutput = response,
-      error => console.error(error)
-    );
   }
 
-  onSubmit(username: string, email : string){
-
-    this.stocksDb.sendData({username: username, email: email}).subscribe(
-      data => console.log(data)
-    );
+  ngAfterViewChecked() {
+    console.log("ngAfterViewChecked");
   }
 
-  onGetData(){
-    this.stocksDb.getOwnData().subscribe(
-      data => {
-        const myArray = [];
-        for(let key in data){
-          myArray.push(data[key]);
-        }
-        this.items = myArray;
-      },
-      error => console.error(error)
-    );
-  }
 
-  companyLookup(){
-    this.stocksDb.companyLookup(this.inCompanyLookup).subscribe(
+  companyLookup(searchedCompany: string){
+    this.stocksDb.companyLookup(searchedCompany).subscribe(
       data => {
         this.stocks = JSON.stringify(data);
       },
@@ -82,8 +57,8 @@ export class AppComponent implements OnInit {
     )
   }
 
-  saveUserStock(stock: string) {
-    this.stocksDb.saveUserStock(this.auth.userProfile.user_id, {stock: this.stockToSave}).subscribe(
+  saveUserStock(stockToSave: string) {
+    this.stocksDb.saveUserStock(this.auth.userProfile.user_id, stockToSave).subscribe(
       data => {
         this.stocks = JSON.stringify(data);
       },
@@ -91,13 +66,11 @@ export class AppComponent implements OnInit {
     )
   }
 
-  getStockInfo(stockCode: string) {
-    this.stockQuote(stockCode);
-  }
 
-  deleteStockInfo(stock: any) {
-    console.log(stock);
-    return this.stocksDb.deleteUserStock(this.auth.userProfile.user_id, stock.key).subscribe(
+
+  deleteStockInfo(stockKey: string) {
+    console.log(stockKey);
+    return this.stocksDb.deleteUserStock(this.auth.userProfile.user_id, stockKey).subscribe(
       data => {console.log(data)}
     );
   }

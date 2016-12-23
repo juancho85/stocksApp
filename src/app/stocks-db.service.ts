@@ -13,27 +13,17 @@ export class StocksDbService {
 
   saveUserStock(userId : string, stock: any) {
     const body = JSON.stringify(stock);
-    return this.http.post('https://stocks-app-4db05.firebaseio.com/'+userId+'/stocks.json', stock)
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+    return this.http.post('https://stocks-app-4db05.firebaseio.com/'+userId+'/stocks.json', body, {
+      headers: headers
+    })
       .map((data: Response) => data.json());
   }
 
   deleteUserStock(userId : string, stockKey: string) {
     const url = encodeURI('https://stocks-app-4db05.firebaseio.com/'+userId+'/stocks/'+stockKey+'.json');
     return this.http.delete(url).map((data: Response) => data.json());
-  }
-
-  getData(){
-    return this.http.get('https://stocks-app-4db05.firebaseio.com/title.json').map((response: Response) => response.json())
-  }
-
-  sendData(user: any){
-    const body = JSON.stringify(user);
-    const headers = new Headers();
-    headers.append('Content-Type','application/json');
-    return this.http.post('https://stocks-app-4db05.firebaseio.com/data.json', body, {
-      headers: headers
-    })
-      .map((data: Response) => data.json());
   }
 
   getOwnData(){

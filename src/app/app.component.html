@@ -54,32 +54,37 @@
   </div>
 </nav>
 <div class="container-fluid">
+
   <div class="row" *ngIf="auth.authenticated()">
-    <input type="text" [(ngModel)]="stockToSave">
-    <button class="btn btn-primary" (click)="saveUserStock()" >Track stock</button>
+    <div class="col-md-6">
+      <input type="text" #stockToSave value="">
+      <button class="btn btn-primary" (click)="saveUserStock(stockToSave.value)" >Track stock</button>
+    </div>
   </div>
   <div class="row" *ngIf="auth.authenticated()">
-    <button class="btn btn-primary" (click)="getUserStocks()" >Get user stocks</button>
-  </div>
-  <div class="row">
-    <input type="text" [(ngModel)]="inCompanyLookup">
-    <button class="btn btn-primary" (click)="companyLookup()" >Company lookup</button>
-  </div>
-  <div class="row">
-    <input type="text" [(ngModel)]="inStockQuote">
-    <button class="btn btn-primary" (click)="stockQuote(inStockQuote)" >Stock quote</button>
-  </div>
-  <div class="row">
-    <input type="text" [(ngModel)]="inStockInteractiveChart">
-    <button class="btn btn-primary" (click)="stockQuote()" >Stock quote</button>
+    <div class="col-md-6">
+      <button class="btn btn-primary" (click)="getUserStocks()" >Get user stocks</button>
+    </div>
   </div>
   <div class="row">
     <div class="col-md-6">
+      <input type="text" #companyLookupInput value="">
+      <button class="btn btn-primary" (click)="companyLookup(companyLookupInput.value)" >Company lookup</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <input type="text" #stockQuoteInput value="">
+      <button class="btn btn-primary" (click)="stockQuote(stockQuoteInput.value)" >Stock quote</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
       <ul class="list-group">
-        <li class="list-group-item" *ngFor="let stock of userStocksArray">
-          {{stock.data.stock}}
-          <a href="#" ><span style="font-size:1.5em;" class="glyphicon glyphicon-trash pull-right" (click)="deleteStockInfo(stock)">   </span></a>
-          <a href="#" ><span style="font-size:1.5em;" class="glyphicon glyphicon-zoom-in pull-right" (click)="getStockInfo(stock.data.stock)">   </span></a>
+        <li class="list-group-item" *ngFor="let stock of userStocksArray">{{stock.data}}
+          <a href="#" ><span class="glyphicon glyphicon-trash pull-right" (click)="deleteStockInfo(stock.key)">   </span></a>
+          <a href="#" ><span class="glyphicon glyphicon-zoom-in pull-right" (click)="stockQuote(stock.data)">   </span></a>
         </li>
       </ul>
     </div>
